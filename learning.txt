@@ -1,0 +1,38 @@
+first demo: 
+     <View style={styles.header}>
+        <Text style={styles.textheader}>
+          Hello {name} !!! ({age} years old)
+        </Text>
+      </View>
+      <View>
+        <TextInput
+          style={styles.textinput}
+          placeholder="e.g. John"
+          onChangeText={(e) => {
+            setTextName(e);
+          }}
+        />
+      </View>
+      <View>
+        <TextInput
+          keyboardType="numeric"
+          style={styles.textinput}
+          placeholder="e.g. 65"
+          onChangeText={(e) => {
+            setTextAge(e);
+          }}
+        />
+      </View>
+      <View style={styles.btn}>
+        <Button
+          title="update"
+          onPress={() => {
+            setName(textName);
+            setAge(textAge);
+          }}
+        />
+      </View>
+
+
+Second Demo:
+    
