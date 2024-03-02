@@ -15,7 +15,7 @@ import DemoNames from "./components/demoNames.js";
 export default function App() {
   var demo = [];
   data.forEach((e) => {
-    demo.push({ name: e.firstName, key: e.id });
+    demo.push({ name: e.firstName, key: e.id, phone: e.phone });
   });
   var [names, setNames] = useState(demo);
 
@@ -26,13 +26,23 @@ export default function App() {
     });
   };
 
-  const submitHandler = (text) => {
-    if (text.length > 3) {
+  const submitHandler = (text, number) => {
+    if (text.length > 3 && number.length >= 10) {
       setNames((prevTodo) => {
-        return [{ name: text, key: names.length + 1 }, ...prevTodo];
+        return [
+          { name: text, key: names.length + 1, phone: number },
+          ...prevTodo,
+        ];
       });
+    } else if (text.length < 3) {
+      Alert.alert("OOPS!!", "todos must be more than 3 chars long", [
+        {
+          text: "Understood",
+          onPress: () => console.log("alert was shown"),
+        },
+      ]);
     } else {
-      Alert.alert("OOPS!!", "todos must be more than 3 chars longs", [
+      Alert.alert("Invalid!!", "number should be more than 10", [
         {
           text: "Understood",
           onPress: () => console.log("alert was shown"),
@@ -59,6 +69,7 @@ export default function App() {
                   <DemoNames
                     name={item.item.name}
                     id={item.item.key}
+                    phone={item.item.phone}
                     pressHandler={pressHandler}
                   />
                 );

@@ -3,13 +3,18 @@ import React, { useState } from "react";
 
 const AddNames = ({ submitHandler }) => {
   const [text, setText] = useState("");
+  const [number, setNumber] = useState(0);
 
-  const changeHandler = (val) => {
+  const changeHandlerText = (val) => {
     setText(val);
   };
 
+  const changeHandlerNumber = (val) => {
+    setNumber(val);
+  };
+
   const addText = () => {
-    submitHandler(text);
+    submitHandler(text, number);
   };
 
   return (
@@ -17,12 +22,18 @@ const AddNames = ({ submitHandler }) => {
       <TextInput
         style={styles.input}
         placeholder="new name"
-        onChangeText={changeHandler}
+        onChangeText={changeHandlerText}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="+6 868 8789"
+        onChangeText={changeHandlerNumber}
+        keyboardType="numeric"
       />
       <Button
         title="add"
         onPress={addText}
-        color="coral"
+        color="black"
         style={styles.button}
       />
     </View>
@@ -35,14 +46,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   input: {
-    padding: 15,
-    margin: 10,
+    padding: 10,
+    marginBottom: 10,
     borderBottomWidth: 2,
   },
   button: {
     height: 50,
     padding: 5,
     alignContent: "center",
+    borderRadius: 10,
   },
 });
 

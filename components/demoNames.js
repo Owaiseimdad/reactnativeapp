@@ -1,12 +1,13 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-export default function DemoNames({ name, id, pressHandler }) {
+export default function DemoNames({ name, id, pressHandler, phone }) {
   return (
     <View style={styles.header} onStartShouldSetResponder={() => true}>
-      <Text style={styles.title} key={id}>
-        {name}
-      </Text>
+      <View style={styles.title}>
+        <Text key={id}>{name}</Text>
+        <Text>{phone}</Text>
+      </View>
       <TouchableOpacity
         onPress={() => {
           pressHandler(id);
@@ -23,6 +24,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignContent: "flex-end",
+    justifyContent: "center",
     backgroundColor: "pink",
     borderColor: "black",
     borderWidth: 1,
