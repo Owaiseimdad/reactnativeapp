@@ -1,57 +1,89 @@
-import { StatusBar } from "expo-status-bar";
 import {
-  Button,
-  ScrollView,
+  Alert,
+  FlatList,
+  Keyboard,
   StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from "react-native";
 import { useState } from "react/cjs/react.development";
-import { data } from "./data";
+import Header from "./components/header";
+import { data } from "./data.js";
+import AddNames from "./components/addNames.js";
+import DemoNames from "./components/demoNames.js";
 
 export default function App() {
-  const [name, setName] = useState("John");
-  const [age, setAge] = useState(0);
-  const [textName, setTextName] = useState({});
-  const [textAge, setTextAge] = useState(0);
+  var demo = [];
+  data.forEach((e) => {
+    demo.push({ name: e.firstName, key: e.id });
+  });
+  var [names, setNames] = useState(demo);
 
-  const printTouchedvalue = (e) => {
-    console.log(e);
+  const pressHandler = (key) => {
+    setNames((prevTodo) => {
+      console.log("clicked delete");
+      return prevTodo.filter((e) => e.key != key);
+    });
+  };
+
+  const submitHandler = (text) => {
+    if (text.length > 3) {
+      setNames((prevTodo) => {
+        return [{ name: text, key: names.length + 1 }, ...prevTodo];
+      });
+    } else {
+      Alert.alert("OOPS!!", "todos must be more than 3 chars longs", [
+        {
+          text: "Understood",
+          onPress: () => console.log("alert was shown"),
+        },
+      ]);
+    }
   };
 
   return (
-    <View style={styles.container}>
-      <ScrollView>
-        {data.map((item) => (
-          <TouchableOpacity
-            key={item.id}
-            style={styles.user}
-            onPress={() => {
-              printTouchedvalue(item.email);
-            }}
-          >
-            <Text>First Name: {item.firstName}</Text>
-            <Text>Last Name: {item.lastName}</Text>
-            <Text>Location: {item.address.city}</Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
-    </View>
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Keyboard.dismiss();
+      }}
+    >
+      <View style={styles.container}>
+        <Header />
+        <View style={styles.content}>
+          <AddNames submitHandler={submitHandler} />
+          <View style={styles.list}>
+            <FlatList
+              data={names}
+              renderItem={(item) => {
+                return (
+                  <DemoNames
+                    name={item.item.name}
+                    id={item.item.key}
+                    pressHandler={pressHandler}
+                  />
+                );
+              }}
+            />
+          </View>
+          <View style={styles.Add}></View>
+        </View>
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
-    marginTop: 30,
+    backgroundColor: "#fff",
+    marginTop: 20,
   },
-  user: {
-    backgroundColor: "grey",
-    padding: 10,
-    margin: 5,
-    borderRadius: 5,
+  content: {
+    padding: 40,
+    flex: 1,
+  },
+  list: {
+    marginTop: 20,
+    flex: 1,
   },
 });
